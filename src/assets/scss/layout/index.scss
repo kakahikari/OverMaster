@@ -1,0 +1,20 @@
+@import "noname";
+// @import "reset";
+
+.whole-container {
+  //
+}
+
+.layout__viewport {
+  position: relative;
+}
+
+.layout__container {
+
+}
+
+.form-control {
+  &[readonly="readonly"] {
+    background-color: #fff;
+  }
+}

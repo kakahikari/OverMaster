@@ -1,0 +1,70 @@
+@import "~src/assets/scss/share";
+
+$_padding: 2.25em;
+
+nav {
+  padding: 2.142em 0;
+}
+
+.nav-title {
+  display: flex;
+  align-items: center;
+  min-height: 3.214em;
+  padding: 0 $_padding;
+  letter-spacing: .035em;
+  pointer-events: none;
+  cursor: default;
+}
+
+ul {
+  padding-left: 0;
+}
+
+.nav-item {
+  overflow: hidden;
+}
+
+.nav-item__child {
+  max-height: 1000px;
+}
+
+.nav-item__title,
+.nav-item__child__link {
+  display: flex;
+  align-items: center;
+  min-height: 3.214em;
+  padding: 0 $_padding;
+}
+
+.nav-item__title {
+  position: relative;
+  margin: .2857em 0;
+  color: $color0;
+  cursor: pointer;
+  background-color: rgba($color0, .1);
+  // &.js--active {
+  //   // background-color: rgba($color0, .1);
+  // }
+  i {
+    position: absolute;
+    top: calc(50% - .5em);
+    left: calc(#{$_padding}/2 - .5em);
+    font-size: 1.142em;
+  }
+}
+
+.nav-item__child__link {
+  &:hover {
+    color: $color0;
+  }
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all $transit ease;
+}
+
+.slide-enter,
+.slide-leave-active {
+  max-height: 0;
+}

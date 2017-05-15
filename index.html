@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" name="viewport">
+    <link rel="icon" href="./static/favicon.ico" type="image/x-icon" />
+    <title>money-agent</title>
+  </head>
+  <body>
+    <div id="system">
+      <router-view>
+        <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 999999; background-color: #fff; cursor: progress;"></div>
+      </router-view>
+      <v-toast ref="vToast"></v-toast>
+    </div>
+  </body>
+</html>
