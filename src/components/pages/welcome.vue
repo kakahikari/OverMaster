@@ -1,7 +1,7 @@
 <template lang="pug">
   section
     .card.card-inverse
-      h3.card-title Welcome To Money-Agent
+      h3.card-title Welcome To OverMaster
 </template>
 
 <script>
@@ -24,5 +24,6 @@ export default {
     background: url("../../../static/images/welcome.jpg");
     background-size: cover;
     background-repeat: no-repeat;
+    text-shadow: 2px 2px #000;
   }
 </style>

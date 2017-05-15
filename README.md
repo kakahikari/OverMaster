@@ -1,4 +1,4 @@
-# money-agent
+# OverMaster
 
 > A Vue.js project
 
@@ -15,5 +15,5 @@ yarn run dev
 
 
 # build
-node setConfig `API_URL` `SITE_DOMAIN` `DEFAULT_LNG`
+node setConfig `API_URL` `DEFAULT_LNG`
 yarn run build

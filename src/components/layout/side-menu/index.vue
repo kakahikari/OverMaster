@@ -17,7 +17,7 @@
 
 <script>
   import node from './node'
-  import UiService from 'services/uiService'
+  // import UiService from 'services/uiService'
 
   export default {
     name: 'side-menu',
@@ -42,24 +42,24 @@
 
     methods: {
       action (key, pageTitle) {
-        const params = {context: this, actionKey: key}
-        UiService.getTemplate(params).then((res) => {
-          let selectList = res.inputs.filter(node => node.type === 'select')
-          for (var i = 0; i < selectList.length; i++) {
-            if (selectList[i].required === 'true') selectList[i].value = selectList[i].options[0].value
-            let options = selectList[i].options
-            for (var j = 0; j < options.length; j++) {
-              options[j].text = this.$root.i18n(options[j].text)
-            }
-            if (selectList[i].options !== undefined && selectList[i].required !== 'true') {
-              selectList[i].options.unshift({text: '', value: ''})
-            }
-          }
-          this.$router.push({ name: res.template, params: {actionName: res.template, inputs: res.inputs, pageTitle: pageTitle} })
-        })
-        .catch((err) => {
-          this.$root.showToast({type: 'warning', content: err})
-        })
+        // const params = {context: this, actionKey: key}
+        // UiService.getTemplate(params).then((res) => {
+        //   let selectList = res.inputs.filter(node => node.type === 'select')
+        //   for (var i = 0; i < selectList.length; i++) {
+        //     if (selectList[i].required === 'true') selectList[i].value = selectList[i].options[0].value
+        //     let options = selectList[i].options
+        //     for (var j = 0; j < options.length; j++) {
+        //       options[j].text = this.$root.i18n(options[j].text)
+        //     }
+        //     if (selectList[i].options !== undefined && selectList[i].required !== 'true') {
+        //       selectList[i].options.unshift({text: '', value: ''})
+        //     }
+        //   }
+        //   this.$router.push({ name: res.template, params: {actionName: res.template, inputs: res.inputs, pageTitle: pageTitle} })
+        // })
+        // .catch((err) => {
+        //   this.$root.showToast({type: 'warning', content: err})
+        // })
       }
     },
 

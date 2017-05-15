@@ -4,9 +4,9 @@
       b-nav-item(@click="toggleMenu()")
         icon.menu-icon(name="bars")
     b-link.navbar-brand
-      router-link(":to"="{name:'index'}") Money-Agent
+      router-link(":to"="{name:'index'}") OverMaster
     b-nav.ml-auto(is-nav-bar)
-      b-nav-item-dropdown(right-alignment @click="test()")
+      b-nav-item-dropdown(right-alignment)
         template(slot="text")
           span Language
         b-dropdown-item.nav-item
