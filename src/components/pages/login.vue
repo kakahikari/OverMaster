@@ -6,7 +6,7 @@
           h4.card-title {{ $root.i18n('Login', language) }}
           v-form(@submit="login(formData)")
             .form-group
-              b-form-input(":placeholder"="$root.i18n('Account', language)" v-model="formData.username")
+              b-form-input(":placeholder"="$root.i18n('Account', language)" v-model="formData.account")
               b-form-input(type="password" ":placeholder"="$root.i18n('Password', language)" v-model="formData.password")
               label Language
               select.form-control.col(v-model="language")
@@ -55,7 +55,7 @@ export default {
         this.language = DEFAULT_LNG
       }
       this.formData = {
-        username: '',
+        account: '',
         password: ''
       }
     },

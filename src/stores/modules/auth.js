@@ -1,4 +1,5 @@
 import { createCookie, readCookie } from 'services/'
+import AdminService from 'services/adminService'
 import MAIN from '../'
 
 const state = {
@@ -35,7 +36,79 @@ const mutations = {
 }
 
 const actions = {
+  login (store, param) {
+    return new Promise((resolve, reject) => {
+      const { context, body } = param
+      AdminService.login({ context, body }).then((res) => {
+        MAIN.dispatch('setUser', param)
+        MAIN.dispatch('setAuthToken', res.token)
+        MAIN.commit('SET_AUTH_STATUS', 1)
 
+        return resolve(res)
+      })
+      .catch((err) => {
+        return reject(err)
+      })
+    })
+  },
+  logout (store, param) {
+    MAIN.dispatch('ERASE_COOKIES')
+  },
+  async getSideMenu (store, param) {
+    const language = await readCookie('language')
+
+    return new Promise((resolve, reject) => {
+      const params = { context: param, language: language }
+      AdminService.getMenuList(params).then((res) => {
+        MAIN.dispatch('setSideMenu', res)
+      })
+      .catch((err) => {
+        return reject(err)
+      })
+    })
+  },
+  setSideMenu (store, param) {
+    store.commit('SET_AUTH_SIDEMENU', param)
+  },
+  async checkStatus (store, param) {
+    const apiToken = await readCookie('apiToken')
+    const username = await readCookie('username')
+    const language = await readCookie('language')
+
+    if (apiToken) {
+      MAIN.commit('SET_AUTH_TOKEN', apiToken)
+      MAIN.commit('SET_AUTH_STATUS', 1)
+    }
+
+    if (username) MAIN.commit('SET_AUTH_USERNAME', username)
+    if (language) MAIN.commit('SET_AUTH_LANGUAGE', language)
+  },
+  async setUser (store, param) {
+    const apiToken = await readCookie('apiToken')
+    const apiNotAllowed = await Boolean(apiToken == null)
+    const { body } = param
+
+    console.log(`@{setUser}`, apiToken)
+
+    if (apiNotAllowed) throw Error('v-no-token')
+    MAIN.dispatch('setAuthUsername', body.username)
+  },
+  setAuthToken (store, param) {
+    store.commit('SET_AUTH_TOKEN', param)
+  },
+  setAuthUsername (store, param) {
+    store.commit('SET_AUTH_USERNAME', param)
+  },
+  async setLanguage (store, param) {
+    const apiToken = await readCookie('apiToken')
+
+    const { language } = param
+    createCookie('language', language, 100)
+    store.commit('SET_AUTH_LANGUAGE', language)
+    if (apiToken) {
+      MAIN.dispatch('getSideMenu', param)
+    }
+  }
 }
 
 export default {

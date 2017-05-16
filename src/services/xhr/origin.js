@@ -1,9 +1,9 @@
 import { ERROR_CODES, XHR_TIMEOUT } from './config'
-import { API_URL, SITE_DOMAIN } from 'src/config'
+import { API_URL } from 'src/config'
 import { readCookie } from '../'
 import axios from 'axios'
 
-const xhr = async ({ context, url = '/', method = 'get', data = null, needToken = true }) => {
+const xhr = async ({ context, url = '/', method = 'get', apiCode, data = null, needToken = true }) => {
   const apiToken = await readCookie('apiToken')
 
   return new Promise((resolve, reject) => {
@@ -16,7 +16,7 @@ const xhr = async ({ context, url = '/', method = 'get', data = null, needToken 
       timeout: XHR_TIMEOUT,
       headers: {
         'cache-control': 'no-cache',
-        'site-domain': SITE_DOMAIN
+        'Api-Code': apiCode
       },
       withCredentials: true
     }
@@ -24,13 +24,13 @@ const xhr = async ({ context, url = '/', method = 'get', data = null, needToken 
     if (needToken) options.headers['Api-Token'] = apiToken
 
     axios(options).then((res) => {
-      if (res.data.error_code === '0') {
+      if (res.data.error_code === '1') {
         return resolve(res.data.result)
       }
 
-      console.warn && console.warn(ERROR_CODES[res.data.error_code.toString()])
-      if (res.data.error_code === '1006') context.$root.default && context.$root.default()
-      return reject(res.data.error_code)
+      console.warn && console.warn(ERROR_CODES[res.data.error_msg.toString()])
+      if (res.data.error_msg === '1006') context.$root.default && context.$root.default()
+      return reject(res.data.error_msg)
     })
     .catch((error) => {
       if (error.response) {
