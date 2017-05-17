@@ -22,7 +22,7 @@
           statisticsList: 'bar-chart',
           OperationList: 'cogs',
           QuotaManage: 'money',
-          UserManage: 'user',
+          UserManage: 'users',
           AuthManage: 'lock'
         }
       }

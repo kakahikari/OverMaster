@@ -18,3 +18,12 @@
     background-color: #fff;
   }
 }
+
+.form-checkbox {
+  height: auto;
+  margin-right: .5em;
+  margin-bottom: 0;
+  input[type="checkbox"] {
+    margin-right: .3em;
+  }
+}

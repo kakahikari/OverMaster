@@ -14,6 +14,13 @@ export default {
     'OperationList': 'Operation List',
     'QuotaManage': 'Quota Manage',
     'UserManage': 'User Manage',
-    'AuthManage': 'Auth Manage'
+    'AuthManage': 'Auth Manage',
+    // table fields
+    'account': 'account',
+    'name': 'name',
+    'last login ip': 'last login ip',
+    'last login time': 'last login time',
+    'site': 'site',
+    'authority': 'authority'
   }
 }

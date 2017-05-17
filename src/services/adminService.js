@@ -31,12 +31,65 @@ class AdminService {
     })
   }
 
-  getMenuList = ({context, language}) => {
+  getUser = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('sch_id', body.id)
+      data.append('sch_name', body.name)
+      data.append('sch_site', body.site)
+
+      return xhr({
+        method: 'post',
+        url: 'om/getUser',
+        apiCode: 102,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  getMenuList = ({context}) => {
     return new Promise((resolve, reject) => {
       return xhr({
         method: 'post',
         url: 'om/getMenu',
         apiCode: 111,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  getAuthority = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      if (body !== undefined) data.append('auth_id', body.auth_id)
+      return xhr({
+        method: 'post',
+        url: 'om/getAuthority',
+        apiCode: 106,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  getAuthDetailList = ({context}) => {
+    return new Promise((resolve, reject) => {
+      return xhr({
+        method: 'post',
+        url: 'om/getAuthDetail',
+        apiCode: 107,
         context
       }).then((res) => {
         return resolve(res)
