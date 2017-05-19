@@ -71,6 +71,7 @@ const actions = {
       const params = { context: param, language: language }
       AdminService.getMenuList(params).then((res) => {
         store.commit('SET_AUTH_SIDEMENU', res)
+        return resolve()
       })
       .catch((err) => {
         return reject(err)
@@ -82,6 +83,7 @@ const actions = {
       const params = { context: param.context }
       SiteService.getSiteList(params).then((res) => {
         store.commit('SET_AUTH_SIDELIST', res)
+        return resolve()
       })
       .catch((err) => {
         return reject(err)
@@ -93,6 +95,7 @@ const actions = {
       const params = { context: param.context }
       AdminService.getAuthDetailList(params).then((res) => {
         store.commit('SET_AUTH_AUTHORITYLIST', res)
+        return resolve()
       })
       .catch((err) => {
         return reject(err)

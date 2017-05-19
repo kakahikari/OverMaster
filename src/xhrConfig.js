@@ -33,12 +33,8 @@ export const errorCodes = {
   '1302': '站台剩餘額度不足',
   '1303': '更新站台已使用額度異常',
   //
-  'v-close': 'you are quitting the game',
-  'v-game-group-not-open': 'this game category has not been made available',
   'v-no-result': 'no data',
   'v-timeout': 'connection overtime',
-  'v-need-withdrawPW': 'please set your withdrawal password',
-  'v-need-profile': 'please setup your basic information',
   'v-no-token': 'login failed',
   'v-need-login': 'please login first',
   //

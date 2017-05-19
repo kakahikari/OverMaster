@@ -34,7 +34,7 @@ class AdminService {
   getUser = ({context, body}) => {
     return new Promise((resolve, reject) => {
       let data = new FormData()
-      data.append('sch_id', body.id)
+      data.append('sch_id', body.account)
       data.append('sch_name', body.name)
       data.append('sch_site', body.site)
 
@@ -42,8 +42,10 @@ class AdminService {
         method: 'post',
         url: 'om/getUser',
         apiCode: 102,
+        data,
         context
       }).then((res) => {
+        if (res.length < 1) throw 'v-no-result'
         return resolve(res)
       }).catch((err) => {
         return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
@@ -70,6 +72,7 @@ class AdminService {
     return new Promise((resolve, reject) => {
       let data = new FormData()
       if (body !== undefined) data.append('auth_id', body.auth_id)
+
       return xhr({
         method: 'post',
         url: 'om/getAuthority',
