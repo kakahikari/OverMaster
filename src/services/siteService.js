@@ -41,6 +41,21 @@ class SiteService {
       })
     })
   }
+
+  updateUserNum = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      return xhr({
+        method: 'post',
+        url: 'om/updateUserNum',
+        apiCode: 302,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
 }
 
 export default new SiteService()

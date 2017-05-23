@@ -34,11 +34,14 @@ export default {
     '总存款': '总存款',
     '总取款': '总取款',
     '站台输赢': '站台输赢',
+    'operating': 'operating',
+    '更新有效会员': '更新有效会员',
     // inputs
     'please select': 'please select',
     'start time': 'start time',
     'end time': 'end time',
     // error message
+    'success': 'success',
     'no data': 'no data'
   }
 }

@@ -14,6 +14,10 @@
             button.btn.btn-primary(type="submit") {{ $root.i18n('Submit', $store.state.AUTH.language) }}
     .card
       .card-block
+        .card-text.text-right
+          button.btn.btn-success.btn-sm(@click="updateUserNum")
+            icon(name="refresh")
+            | &nbsp;{{ $root.i18n('更新有效会员') }}
         b-table.table-bordered(striped ":items"="list" ":fields"="fields")
 </template>
 
@@ -81,6 +85,15 @@
           out.push({ text: name, value: node.site })
         })
         this.siteOptions = out
+      },
+      updateUserNum () {
+        SiteService.updateUserNum({context: this}).then((res) => {
+          this.$root.showToast({content: this.$root.i18n('success')})
+          this.action()
+        })
+        .catch((err) => {
+          this.$root.showToast({type: 'warning', content: err})
+        })
       }
     }
   }
