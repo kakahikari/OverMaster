@@ -29,7 +29,7 @@ const xhr = async ({ context, url = '/', method = 'get', apiCode, data = null, n
       }
 
       console.warn && console.warn(ERROR_CODES[res.data.error_msg.toString()])
-      if (res.data.error_msg === '1006') context.$root.default && context.$root.default()
+      if (res.data.error_msg === '1006') context.$root.default()
       return reject(res.data.error_msg)
     })
     .catch((error) => {

@@ -19,11 +19,11 @@ class AdminService {
       }).then((res) => {
         if (!res) throw new Error('v-no-token')
 
-        createCookie('apiToken', res, 1)
+        createCookie('apiToken', res.token, 1)
+        createCookie('auth', res.auth_id, 1)
         createCookie('username', body.account, 1)
 
-        let out = { token: res }
-        return resolve(out)
+        return resolve(res)
       })
       .catch((err) => {
         return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
@@ -31,16 +31,38 @@ class AdminService {
     })
   }
 
-  getUser = ({context, body}) => {
+  getUserData = ({context, body}) => {
     return new Promise((resolve, reject) => {
       let data = new FormData()
-      data.append('sch_id', body.account)
-      data.append('sch_name', body.name)
-      data.append('sch_site', body.site)
+      data.append('sch_account', body.sch_account)
+      data.append('sch_name', body.sch_name)
+      data.append('sch_site', body.sch_site)
 
       return xhr({
         method: 'post',
-        url: 'om/getUser',
+        url: 'om/getUserData',
+        apiCode: 112,
+        data,
+        context
+      }).then((res) => {
+        if (res.length < 1) throw 'v-no-result'
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  getUserList = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('sch_account', body.sch_account)
+      data.append('sch_name', body.sch_name)
+      data.append('sch_site', body.sch_site)
+
+      return xhr({
+        method: 'post',
+        url: 'om/getUserList',
         apiCode: 102,
         data,
         context

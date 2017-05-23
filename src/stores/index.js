@@ -13,6 +13,7 @@ export default new Vuex.Store({
   actions: {
     ERASE_COOKIES ({commit}) {
       eraseCookie('apiToken')
+      eraseCookie('auth')
       eraseCookie('username')
 
       commit('AUTH_DEFAULT')

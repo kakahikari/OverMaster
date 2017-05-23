@@ -8,25 +8,25 @@
             label  {{ $root.i18n('site') }}
             b-form-select(
             ":options"="siteOptions"
-            v-model="formData.site"
+            v-model="formData.sch_site"
             )
           .form-group.col-3
             label  {{ $root.i18n('account') }}
             b-form-input(
-              v-model="formData.account"
+              v-model="formData.sch_account"
               type="text"
             )
           .form-group.col-3
             label  {{ $root.i18n('name') }}
             b-form-input(
-              v-model="formData.name"
+              v-model="formData.sch_name"
               type="text"
             )
           .form-group.col
             button.btn.btn-primary(type="submit") {{ $root.i18n('Submit', $store.state.AUTH.language) }}
     .card
       .card-block
-        b-table.table-bordered(striped ":items"="list" ":fields"="fields")
+        b-table.table-bordered(striped ":items"="list" ":fields"="fields" v-if="authorityGroupList.length > 0")
           template(slot="site" scope="item")
             template(v-for="(site, index) in item.value.split(',')")
               template(v-if="$store.state.AUTH.language == 'cn'")
@@ -36,7 +36,7 @@
               template(v-if="index !== item.value.split(',').length - 1")
                 | ,
           template(slot="authority" scope="item")
-            | {{ $store.state.AUTH.authorityList.filter(node => node.id == item.value)[0].name }}
+            | {{ authorityGroupList.filter(node => node.id == item.value)[0].name }}
 </template>
 
 <script>
@@ -48,6 +48,7 @@
     data () {
       return {
         list: [],
+        authorityGroupList: [],
         siteOptions: [],
         fields: {
           account: { label: this.$root.i18n('account'), sortable: true },
@@ -58,9 +59,9 @@
           last_login_time: { label: this.$root.i18n('last login time'), sortable: true }
         },
         formData: {
-          account: '',
-          name: '',
-          site: ''
+          sch_account: '',
+          sch_name: '',
+          sch_site: ''
         }
       }
     },
@@ -73,12 +74,15 @@
       } else {
         this.getSiteOptions()
       }
+      AdminService.getAuthority({context: this}).then((res) => {
+        this.authorityGroupList = res
+      })
       this.action()
     },
 
     methods: {
       action () {
-        AdminService.getUser({context: this, body: {account: this.formData.account, name: this.formData.name, site: this.formData.site}}).then((res) => {
+        AdminService.getUserList({context: this, body: this.formData}).then((res) => {
           this.list = res
         })
         .catch((err) => {

@@ -4,6 +4,7 @@ import SiteService from 'services/siteService'
 
 const state = {
   token: '',
+  auth: '',
   status: 0,
   username: '',
   language: '',
@@ -16,6 +17,7 @@ const state = {
 const mutations = {
   AUTH_DEFAULT (state) {
     state.token = ''
+    state.auth = ''
     state.status = 0
     state.username = ''
     state.sideMenu = []
@@ -24,6 +26,9 @@ const mutations = {
   },
   SET_AUTH_TOKEN (state, payload) {
     state.token = payload
+  },
+  SET_AUTH_AUTH (state, payload) {
+    state.auth = payload
   },
   SET_AUTH_STATUS (state, payload) {
     state.status = payload
@@ -51,7 +56,7 @@ const actions = {
       const { context, body } = param
       AdminService.login({ context, body }).then((res) => {
         store.dispatch('setUser', param)
-        store.dispatch('setAuthToken', res.token)
+        store.dispatch('setAuthToken', res)
         store.commit('SET_AUTH_STATUS', 1)
 
         return resolve(res)
@@ -104,6 +109,7 @@ const actions = {
   },
   async checkStatus (store, param) {
     const apiToken = await readCookie('apiToken')
+    const auth = await readCookie('auth')
     const username = await readCookie('username')
     const language = await readCookie('language')
 
@@ -114,6 +120,7 @@ const actions = {
       store.dispatch('getAuthDetailList', {context: param.context})
     }
 
+    if (auth) store.commit('SET_AUTH_AUTH', auth)
     if (username) store.commit('SET_AUTH_USERNAME', username)
     if (language) store.commit('SET_AUTH_LANGUAGE', language)
   },
@@ -128,7 +135,8 @@ const actions = {
     store.dispatch('setAuthUsername', body.username)
   },
   setAuthToken (store, param) {
-    store.commit('SET_AUTH_TOKEN', param)
+    store.commit('SET_AUTH_TOKEN', param.token)
+    store.commit('SET_AUTH_AUTH', param.auth_id)
   },
   setAuthUsername (store, param) {
     store.commit('SET_AUTH_USERNAME', param)

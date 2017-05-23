@@ -42,6 +42,9 @@
             })
             this.authorityGroupList.push({id: node.id, list: res})
           })
+          .catch((err) => {
+            this.$root.showToast({type: 'warning', content: err})
+          })
         })
       })
     }
