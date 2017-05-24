@@ -56,6 +56,27 @@ class SiteService {
       })
     })
   }
+
+  editSiteQuota = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('site', body.site)
+      data.append('quota', body.quota)
+      data.append('quota_temporary', body.quota_temporary)
+
+      return xhr({
+        method: 'post',
+        url: 'om/editSiteQuota',
+        apiCode: 305,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
 }
 
 export default new SiteService()

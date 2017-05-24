@@ -10,6 +10,8 @@ export default {
     'Logout': 'Logout',
     'Total number of records': 'Total number of records',
     '權限管理群組對應錯誤': '权限管理群组对应错误',
+    'close': 'close',
+    'ok': 'ok',
     // side-menu
     'statisticsList': 'Statistics List',
     'OperationList': 'Operation List',
@@ -21,7 +23,7 @@ export default {
     'name': 'name',
     'last login ip': 'last login ip',
     'last login time': 'last login time',
-    'site': 'site',
+    'site': 'site name',
     'authority': 'authority',
     'number of active members': 'number of active members',
     '当月基本额度': '当月基本额度',
@@ -36,6 +38,7 @@ export default {
     '站台输赢': '站台输赢',
     'operating': 'operating',
     '更新有效会员': '更新有效会员',
+    '设定额度': '设定额度',
     // inputs
     'please select': 'please select',
     'start time': 'start time',

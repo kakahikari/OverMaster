@@ -23,6 +23,21 @@
             | {{ item.value | toNumber }}
           template(slot="quota_left" scope="item")
             | {{ item.value | toNumber }}
+          template(slot="operating" scope="item")
+            button.btn.btn-secondary.btn-sm(
+              @click="editForm(item.item.site, item.item.quota, item.item.quota_temporary)"
+            ) {{ $root.i18n('设定额度') }}
+    b-modal(@ok="submitForm" id="editForm" ":title"="$root.i18n('设定额度')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
+      form(@submit.stop.prevent="submitForm")
+        .form-group.col
+          label {{ $root.i18n('site') }}
+          span {{ editFormData.name }}
+        .form-group.col
+          label {{ $root.i18n('当月基本额度') }}
+          b-form-input(v-model="editFormData.quota" type="number")
+        .form-group.col
+          label {{ $root.i18n('临时额度') }}
+          b-form-input(v-model="editFormData.quota_temporary" type="number")
 </template>
 
 <script>
@@ -40,10 +55,16 @@
           quota: { label: this.$root.i18n('当月基本额度'), sortable: true },
           quota_temporary: { label: this.$root.i18n('临时额度'), sortable: true },
           quota_used: { label: this.$root.i18n('已使用额度'), sortable: true },
-          quota_left: { label: this.$root.i18n('剩余额度'), sortable: true }
+          quota_left: { label: this.$root.i18n('剩余额度'), sortable: true },
+          operating: { label: this.$root.i18n('operating') }
         },
         formData: {
           site_code: ''
+        },
+        editFormData: {
+          site: '',
+          quota: 0,
+          quota_temporary: 0
         }
       }
     },
@@ -71,7 +92,7 @@
             } else if (this.$store.state.AUTH.language === 'en') {
               name = node.en_name
             }
-            out.push({ name: name, quota: node.quota, quota_temporary: node.quota_temporary, quota_used: node.quota_used, quota_left: quotaLeft })
+            out.push({ site: node.site, name: name, quota: node.quota, quota_temporary: node.quota_temporary, quota_used: node.quota_used, quota_left: quotaLeft })
           })
           this.list = out
         })
@@ -92,6 +113,31 @@
           out.push({ text: name, value: node.site })
         })
         this.siteOptions = out
+      },
+      editForm (site, quota, quotaTemporary) {
+        let name = ''
+        let target = this.$store.state.AUTH.sideList.filter(node => node.site === site)[0]
+        if (this.$store.state.AUTH.language === 'cn') {
+          name = target.cn_name
+        } else if (this.$store.state.AUTH.language === 'en') {
+          name = target.en_name
+        }
+        this.editFormData = {
+          name: name,
+          site: site,
+          quota: quota,
+          quota_temporary: quotaTemporary
+        }
+        this.$root.$emit('show::modal', 'editForm')
+      },
+      submitForm () {
+        SiteService.editSiteQuota({context: this, body: this.editFormData}).then((res) => {
+          this.$root.showToast({content: this.$root.i18n('success')})
+          this.action()
+        })
+        .catch((err) => {
+          this.$root.showToast({type: 'warning', content: err})
+        })
       }
     }
   }
