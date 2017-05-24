@@ -102,6 +102,7 @@ class AdminService {
         data,
         context
       }).then((res) => {
+        if (res.length < 1) throw 'v-no-result'
         return resolve(res)
       }).catch((err) => {
         return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
@@ -115,6 +116,30 @@ class AdminService {
         method: 'post',
         url: 'om/getAuthDetail',
         apiCode: 107,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  addUser = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('account', body.account)
+      data.append('name', body.name)
+      data.append('password', body.password)
+      data.append('status', 1)
+      data.append('authority', body.authority)
+      data.append('site', body.site)
+
+      return xhr({
+        method: 'post',
+        url: 'om/addUser',
+        apiCode: 103,
+        data,
         context
       }).then((res) => {
         return resolve(res)

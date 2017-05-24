@@ -14,6 +14,7 @@ class SiteService {
         data,
         context
       }).then((res) => {
+        if (res.length < 1) throw 'v-no-result'
         return resolve(res)
       }).catch((err) => {
         return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
@@ -35,6 +36,7 @@ class SiteService {
         data,
         context
       }).then((res) => {
+        if (res.length < 1) throw 'v-no-result'
         return resolve(res)
       }).catch((err) => {
         return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
