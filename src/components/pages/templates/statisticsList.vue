@@ -43,7 +43,7 @@
     },
 
     mounted () {
-      if (this.$store.state.AUTH.sideList.length < 1) {
+      if (this.$store.state.AUTH.siteList.length < 1) {
         this.$store.dispatch('getSiteList', {context: this}).then((res) => {
           this.getSiteOptions()
         })
@@ -75,7 +75,7 @@
       getSiteOptions () {
         let out = []
         out.push({ text: this.$root.i18n('please select'), value: '' })
-        this.$store.state.AUTH.sideList.forEach((node) => {
+        this.$store.state.AUTH.siteList.forEach((node) => {
           let name = ''
           if (this.$store.state.AUTH.language === 'cn') {
             name = node.cn_name

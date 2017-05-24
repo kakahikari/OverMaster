@@ -10,7 +10,7 @@ const state = {
   language: '',
   currency: '',
   sideMenu: [],
-  sideList: [],
+  siteList: [],
   authorityList: []
 }
 
@@ -21,7 +21,7 @@ const mutations = {
     state.status = 0
     state.username = ''
     state.sideMenu = []
-    state.sideList = []
+    state.siteList = []
     state.authorityList = []
   },
   SET_AUTH_TOKEN (state, payload) {
@@ -42,8 +42,8 @@ const mutations = {
   SET_AUTH_SIDEMENU (state, payload) {
     state.sideMenu = payload
   },
-  SET_AUTH_SIDELIST (state, payload) {
-    state.sideList = payload
+  SET_AUTH_siteList (state, payload) {
+    state.siteList = payload
   },
   SET_AUTH_AUTHORITYLIST (state, payload) {
     state.authorityList = payload
@@ -87,7 +87,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       const params = { context: param.context }
       SiteService.getSiteList(params).then((res) => {
-        store.commit('SET_AUTH_SIDELIST', res)
+        store.commit('SET_AUTH_siteList', res)
         return resolve()
       })
       .catch((err) => {

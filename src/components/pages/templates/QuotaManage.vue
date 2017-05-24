@@ -25,10 +25,10 @@
             | {{ item.value | toNumber }}
           template(slot="operating" scope="item")
             button.btn.btn-secondary.btn-sm(
-              @click="editForm(item.item.site, item.item.quota, item.item.quota_temporary)"
+              @click="editForm({site: item.item.site, quota: item.item.quota, quotaTemporary: item.item.quota_temporary})"
             ) {{ $root.i18n('设定额度') }}
-    b-modal(@ok="submitForm" id="editForm" ":title"="$root.i18n('设定额度')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-      form(@submit.stop.prevent="submitForm")
+    b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('设定额度')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
+      form(@submit.stop.prevent="submitEditForm")
         .form-group.col
           label {{ $root.i18n('site') }}
           span {{ editFormData.name }}
@@ -70,7 +70,7 @@
     },
 
     mounted () {
-      if (this.$store.state.AUTH.sideList.length < 1) {
+      if (this.$store.state.AUTH.siteList.length < 1) {
         this.$store.dispatch('getSiteList', {context: this}).then((res) => {
           this.getSiteOptions()
         })
@@ -103,7 +103,7 @@
       getSiteOptions () {
         let out = []
         out.push({ text: this.$root.i18n('please select'), value: '' })
-        this.$store.state.AUTH.sideList.forEach((node) => {
+        this.$store.state.AUTH.siteList.forEach((node) => {
           let name = ''
           if (this.$store.state.AUTH.language === 'cn') {
             name = node.cn_name
@@ -114,9 +114,9 @@
         })
         this.siteOptions = out
       },
-      editForm (site, quota, quotaTemporary) {
+      editForm ({site, quota, quotaTemporary}) {
         let name = ''
-        let target = this.$store.state.AUTH.sideList.filter(node => node.site === site)[0]
+        let target = this.$store.state.AUTH.siteList.filter(node => node.site === site)[0]
         if (this.$store.state.AUTH.language === 'cn') {
           name = target.cn_name
         } else if (this.$store.state.AUTH.language === 'en') {
@@ -130,7 +130,7 @@
         }
         this.$root.$emit('show::modal', 'editForm')
       },
-      submitForm () {
+      submitEditForm () {
         SiteService.editSiteQuota({context: this, body: this.editFormData}).then((res) => {
           this.$root.showToast({content: this.$root.i18n('success')})
           this.action()
