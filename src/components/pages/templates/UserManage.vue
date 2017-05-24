@@ -26,17 +26,73 @@
             button.btn.btn-primary(type="submit") {{ $root.i18n('Submit', $store.state.AUTH.language) }}
     .card
       .card-block
+        .card-text.text-right
+          button.btn.btn-success.btn-sm(@click="addForm")
+            icon(name="plus")
+            | &nbsp;{{ $root.i18n('add user') }}
         b-table.table-bordered(striped ":items"="list" ":fields"="fields" v-if="authorityGroupList.length > 0")
           template(slot="site" scope="item")
             template(v-for="(site, index) in item.value.split(',')")
               template(v-if="$store.state.AUTH.language == 'cn'")
-                | {{ $store.state.AUTH.sideList.filter(node => node.site == site)[0].cn_name }}
+                | {{ $store.state.AUTH.siteList.filter(node => node.site == site)[0].cn_name }}
               template(v-if="$store.state.AUTH.language == 'en'")
-                | {{ $store.state.AUTH.sideList.filter(node => node.site == site)[0].en_name }}
+                | {{ $store.state.AUTH.siteList.filter(node => node.site == site)[0].en_name }}
               template(v-if="index !== item.value.split(',').length - 1")
                 | ,
           template(slot="authority" scope="item")
             | {{ authorityGroupList.filter(node => node.id == item.value)[0].name }}
+          template(slot="operating" scope="item")
+            button.btn.btn-secondary.btn-sm(
+              @click="editForm({userId: item.item.id, name: item.item.name, status: item.item.status, authority: item.item.authority, site: item.item.site})"
+            )
+              icon(name="pencil-square-o")
+              | &nbsp;{{ $root.i18n('edit') }}
+      b-modal(@ok="submitAddForm" id="addForm" ":title"="$root.i18n('Add user')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
+        form(@submit.stop.prevent="submitAddForm")
+          .form-group.col
+            label {{ $root.i18n('account') }}
+            b-form-input(v-model="addFormData.account")
+          .form-group.col
+            label {{ $root.i18n('name') }}
+            b-form-input(v-model="addFormData.name")
+          .form-group.col
+            label {{ $root.i18n('password') }}
+            b-form-input(v-model="addFormData.password" type="password")
+          .form-group.col
+            label {{ $root.i18n('authority') }}
+            b-form-select(v-model="addFormData.authority" ":options"="authorityGroupOptions")
+          .form-group.col
+            label {{ $root.i18n('site') }}
+            template(v-for="node in $store.state.AUTH.siteList")
+              label
+                input(type="checkbox" v-model="addFormSelectSites" ":value"="node.site")
+                template(v-if="$store.state.AUTH.language == 'cn'")
+                  span &nbsp;{{ node.cn_name }}
+                template(v-if="$store.state.AUTH.language == 'en'")
+                  span &nbsp;{{ node.en_name }}
+      b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('Edit user')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
+        form(@submit.stop.prevent="submitEditForm")
+          .form-group.col
+            label {{ $root.i18n('name') }}
+            b-form-input(v-model="editFormData.name")
+          .form-group.col
+            label {{ $root.i18n('change password') }}
+            b-form-input(v-model="editFormData.password" type="password")
+          .form-group.col
+            label {{ $root.i18n('authority') }}
+            b-form-select(v-model="editFormData.authority" ":options"="authorityGroupOptions")
+          .form-group.col
+            label {{ $root.i18n('status') }}
+            b-form-radio(v-model="editFormData.status" :options="statusOptions")
+          .form-group.col
+            label {{ $root.i18n('site') }}
+            template(v-for="node in $store.state.AUTH.siteList")
+              label
+                input(type="checkbox" v-model="editFormSelectSites" ":value"="node.site")
+                template(v-if="$store.state.AUTH.language == 'cn'")
+                  span &nbsp;{{ node.cn_name }}
+                template(v-if="$store.state.AUTH.language == 'en'")
+                  span &nbsp;{{ node.en_name }}
 </template>
 
 <script>
@@ -49,6 +105,7 @@
       return {
         list: [],
         authorityGroupList: [],
+        authorityGroupOptions: [],
         siteOptions: [],
         fields: {
           account: { label: this.$root.i18n('account'), sortable: true },
@@ -56,18 +113,59 @@
           authority: { label: this.$root.i18n('authority'), sortable: true },
           site: { label: this.$root.i18n('site'), sortable: true },
           last_login_ip: { label: this.$root.i18n('last login ip'), sortable: true },
-          last_login_time: { label: this.$root.i18n('last login time'), sortable: true }
+          last_login_time: { label: this.$root.i18n('last login time'), sortable: true },
+          operating: { label: this.$root.i18n('operating') }
         },
         formData: {
           sch_account: '',
           sch_name: '',
           sch_site: ''
-        }
+        },
+        addFormSelectSites: [],
+        addFormData: {
+          account: '',
+          name: '',
+          password: '',
+          authority: '',
+          site: ''
+        },
+        editFormSelectSites: [],
+        editFormData: {
+          user_id: '',
+          name: '',
+          password: '',
+          status: '',
+          authority: '',
+          site: ''
+        },
+        statusOptions: [
+          {text: this.$root.i18n('enable'), value: '1'},
+          {text: this.$root.i18n('disable'), value: '0'}
+        ]
+      }
+    },
+
+    watch: {
+      addFormSelectSites (newVal) {
+        let temp = ''
+        newVal.forEach((node, index, array) => {
+          temp += node
+          if (index !== array.length - 1) temp += ','
+        })
+        this.addFormData.site = temp
+      },
+      editFormSelectSites (newVal) {
+        let temp = ''
+        newVal.forEach((node, index, array) => {
+          temp += node
+          if (index !== array.length - 1) temp += ','
+        })
+        this.editFormData.site = temp
       }
     },
 
     mounted () {
-      if (this.$store.state.AUTH.sideList.length < 1) {
+      if (this.$store.state.AUTH.siteList.length < 1) {
         this.$store.dispatch('getSiteList', {context: this}).then((res) => {
           this.getSiteOptions()
         })
@@ -76,6 +174,11 @@
       }
       AdminService.getAuthority({context: this}).then((res) => {
         this.authorityGroupList = res
+        this.authorityGroupOptions.push({text: this.$root.i18n('please select'), value: ''})
+        this.authorityGroupList.forEach((node) => {
+          let row = {text: node.name, value: node.id}
+          this.authorityGroupOptions.push(row)
+        })
       })
       this.action()
     },
@@ -92,7 +195,7 @@
       getSiteOptions () {
         let out = []
         out.push({ text: this.$root.i18n('please select'), value: '' })
-        this.$store.state.AUTH.sideList.forEach((node) => {
+        this.$store.state.AUTH.siteList.forEach((node) => {
           let name = ''
           if (this.$store.state.AUTH.language === 'cn') {
             name = node.cn_name
@@ -102,6 +205,50 @@
           out.push({ text: name, value: node.site })
         })
         this.siteOptions = out
+      },
+      addForm () {
+        this.addFormSelectSites = []
+        this.addFormData = {
+          account: '',
+          name: '',
+          password: '',
+          authority: '',
+          site: ''
+        }
+        this.$root.$emit('show::modal', 'addForm')
+      },
+      submitAddForm () {
+        AdminService.addUser({context: this, body: this.addFormData}).then((res) => {
+          this.$root.showToast({type: 'warning', content: this.$root.i18n('success')})
+          this.action()
+        })
+        .catch((err) => {
+          this.$root.showToast({type: 'warning', content: err})
+        })
+      },
+      editForm ({userId, name, status, authority, site}) {
+        this.editFormData = {
+          user_id: userId,
+          name: name,
+          password: '',
+          status: status,
+          authority: authority,
+          site: ''
+        }
+        this.editFormSelectSites = []
+        site.split(',').forEach((node) => {
+          this.editFormSelectSites.push(node)
+        })
+        this.$root.$emit('show::modal', 'editForm')
+      },
+      submitEditForm () {
+        AdminService.editUser({context: this, body: this.editFormData}).then((res) => {
+          this.$root.showToast({type: 'warning', content: this.$root.i18n('success')})
+          this.action()
+        })
+        .catch((err) => {
+          this.$root.showToast({type: 'warning', content: err})
+        })
       }
     }
   }

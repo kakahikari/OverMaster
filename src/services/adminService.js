@@ -148,6 +148,30 @@ class AdminService {
       })
     })
   }
+
+  editUser = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('user_id', body.user_id)
+      data.append('name', body.name)
+      data.append('password', body.password)
+      data.append('status', body.status)
+      data.append('authority', body.authority)
+      data.append('site', body.site)
+
+      return xhr({
+        method: 'post',
+        url: 'om/editUser',
+        apiCode: 104,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
 }
 
 export default new AdminService()
