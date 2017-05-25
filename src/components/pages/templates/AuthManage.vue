@@ -6,7 +6,7 @@
         .card-text.text-right
           button.btn.btn-success.btn-sm(@click="addForm")
             icon(name="plus")
-            | &nbsp;{{ $root.i18n('add authority') }}
+            | &nbsp;{{ $root.i18n('Add authority') }}
         b-table.table-bordered(striped ":items"="list" ":fields"="fields" v-if="authorityGroupList.length == list.length")
           template(slot="id" scope="item")
             template(v-for="auth in authorityGroupList.filter(node => node.id == item.value)[0].list")

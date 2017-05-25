@@ -29,7 +29,7 @@
         .card-text.text-right
           button.btn.btn-success.btn-sm(@click="addForm")
             icon(name="plus")
-            | &nbsp;{{ $root.i18n('add user') }}
+            | &nbsp;{{ $root.i18n('Add user') }}
         b-table.table-bordered(striped ":items"="list" ":fields"="fields" v-if="authorityGroupList.length > 0")
           template(slot="site" scope="item")
             template(v-for="(site, index) in item.value.split(',')")
