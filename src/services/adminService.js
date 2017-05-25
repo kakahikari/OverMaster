@@ -172,6 +172,66 @@ class AdminService {
       })
     })
   }
+
+  addAuthority = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('name', body.name)
+      data.append('code', body.code)
+
+      return xhr({
+        method: 'post',
+        url: 'om/addAuthority',
+        apiCode: 108,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  editAuthority = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('auth_id', body.auth_id)
+      data.append('name', body.name)
+      data.append('code', body.code)
+
+      return xhr({
+        method: 'post',
+        url: 'om/editAuthority',
+        apiCode: 109,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  delAuthority = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('auth_id', body.auth_id)
+
+      return xhr({
+        method: 'post',
+        url: 'om/delAuthority',
+        apiCode: 110,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
 }
 
 export default new AdminService()

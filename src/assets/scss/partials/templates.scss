@@ -21,4 +21,13 @@
   .card-text {
     margin-bottom: .5em;
   }
+
+  td {
+    button {
+      margin-right: .5em;
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  }
 }
