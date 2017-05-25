@@ -26,7 +26,9 @@
           template(slot="operating" scope="item")
             button.btn.btn-secondary.btn-sm(
               @click="editForm({site: item.item.site, quota: item.item.quota, quotaTemporary: item.item.quota_temporary})"
-            ) {{ $root.i18n('设定额度') }}
+            )
+              icon(name="pencil-square-o")
+              | &nbsp;{{ $root.i18n('设定额度') }}
     b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('设定额度')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
       form(@submit.stop.prevent="submitEditForm")
         .form-group.col
