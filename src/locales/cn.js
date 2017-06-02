@@ -16,6 +16,8 @@ export default {
     'disable': '停用',
     'delete': '删除',
     'Are you sure to delete': '确定要删除',
+    'Must be 5 to 20 characters, numbers or /': '字数为5至20可包含英文(大小写)/数字/底线',
+    'Must be 8 to 20 characters or numbers': '字数为8至20可包含英文(大小写)/数字',
     // side-menu
     'statisticsList': '站台统计',
     'OperationList': '站台营运',

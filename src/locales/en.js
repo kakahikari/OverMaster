@@ -16,6 +16,8 @@ export default {
     'disable': 'disable',
     'delete': 'delete',
     'Are you sure to delete': 'are you sure to delete',
+    'Must be 5 to 20 characters, numbers or /': 'Must be 5 to 20 characters, numbers or /',
+    'Must be 8 to 20 characters or numbers': 'Must be 8 to 20 characters or numbers',
     // side-menu
     'statisticsList': 'Site statistics',
     'OperationList': 'Site operation',

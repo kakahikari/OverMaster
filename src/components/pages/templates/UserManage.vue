@@ -55,9 +55,11 @@
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="addFormData.name")
+            small.text-muted {{ $root.i18n('Must be 5 to 20 characters, numbers or /') }}
           .form-group.col
             label {{ $root.i18n('password') }}
             b-form-input(v-model="addFormData.password" type="password")
+            small.text-muted {{ $root.i18n('Must be 8 to 20 characters or numbers') }}
           .form-group.col
             label {{ $root.i18n('authority') }}
             b-form-select(v-model="addFormData.authority" ":options"="authorityGroupOptions")
@@ -78,6 +80,7 @@
           .form-group.col
             label {{ $root.i18n('change password') }}
             b-form-input(v-model="editFormData.password" type="password")
+            small.text-muted {{ $root.i18n('Must be 8 to 20 characters or numbers') }}
           .form-group.col
             label {{ $root.i18n('authority') }}
             b-form-select(v-model="editFormData.authority" ":options"="authorityGroupOptions")
