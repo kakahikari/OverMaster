@@ -43,7 +43,7 @@
             | {{ authorityGroupList.filter(node => node.id == item.value)[0].name }}
           template(slot="operating" scope="item")
             button.btn.btn-secondary.btn-sm(
-              @click="editForm({userId: item.item.id, name: item.item.name, status: item.item.status, authority: item.item.authority, site: item.item.site})"
+              @click="editForm({userId: item.item.id, name: item.item.name, status: item.item.status, authority: item.item.authority, site: item.item.site, account: item.item.account})"
             )
               icon(name="pencil-square-o")
               | &nbsp;{{ $root.i18n('edit') }}
@@ -83,7 +83,8 @@
             small.text-muted {{ $root.i18n('Must be 8 to 20 characters or numbers') }}
           .form-group.col
             label {{ $root.i18n('authority') }}
-            b-form-select(v-model="editFormData.authority" ":options"="authorityGroupOptions")
+            b-form-select(v-if="editFormData.account !== $store.state.AUTH.username" v-model="editFormData.authority" ":options"="authorityGroupOptions")
+            b-form-select(v-else v-model="editFormData.authority" ":options"="authorityGroupOptions" disabled)
           .form-group.col
             label {{ $root.i18n('status') }}
             b-form-radio(v-model="editFormData.status" :options="statusOptions")
@@ -139,7 +140,8 @@
           password: '',
           status: '',
           authority: '',
-          site: ''
+          site: '',
+          account: ''
         },
         statusOptions: [
           {text: this.$root.i18n('enable'), value: '1'},
@@ -229,14 +231,15 @@
           this.$root.showToast({type: 'warning', content: err})
         })
       },
-      editForm ({userId, name, status, authority, site}) {
+      editForm ({userId, name, status, authority, site, account}) {
         this.editFormData = {
           user_id: userId,
           name: name,
           password: '',
           status: status,
           authority: authority,
-          site: ''
+          site: '',
+          account: account
         }
         this.editFormSelectSites = []
         site.split(',').forEach((node) => {
@@ -245,6 +248,7 @@
         this.$root.$emit('show::modal', 'editForm')
       },
       submitEditForm () {
+        if (this.editFormData.account === this.$store.state.AUTH.username) this.editFormData.account = ''
         AdminService.editUser({context: this, body: this.editFormData}).then((res) => {
           this.$root.showToast({type: 'warning', content: this.$root.i18n('success')})
           this.action()
