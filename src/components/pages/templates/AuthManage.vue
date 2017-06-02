@@ -25,7 +25,7 @@
               )
                 icon(name="trash")
                 | &nbsp;{{ $root.i18n('delete') }}
-        span(v-else) {{ $root.i18n('權限管理群組對應錯誤') }}
+        span(v-else) {{ $root.i18n('corresponding error in permission mgmt group') }}
       b-modal(@ok="submitAddForm" id="addForm" ":title"="$root.i18n('Add authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
         form(@submit.stop.prevent="submitAddForm")
           .form-group.col

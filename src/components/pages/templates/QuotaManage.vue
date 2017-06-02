@@ -28,17 +28,17 @@
               @click="editForm({site: item.item.site, quota: item.item.quota, quotaTemporary: item.item.quota_temporary})"
             )
               icon(name="pencil-square-o")
-              | &nbsp;{{ $root.i18n('设定额度') }}
-    b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('设定额度')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
+              | &nbsp;{{ $root.i18n('edit allowance') }}
+    b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('edit allowance')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
       form(@submit.stop.prevent="submitEditForm")
         .form-group.col
           label {{ $root.i18n('site') }}
           span {{ editFormData.name }}
         .form-group.col
-          label {{ $root.i18n('当月基本额度') }}
+          label {{ $root.i18n('Monthly basic allowance') }}
           b-form-input(v-model="editFormData.quota" type="number")
         .form-group.col
-          label {{ $root.i18n('临时额度') }}
+          label {{ $root.i18n('Temporary allowance') }}
           b-form-input(v-model="editFormData.quota_temporary" type="number")
 </template>
 
@@ -54,10 +54,10 @@
         siteOptions: [],
         fields: {
           name: { label: this.$root.i18n('name'), sortable: true },
-          quota: { label: this.$root.i18n('当月基本额度'), sortable: true },
-          quota_temporary: { label: this.$root.i18n('临时额度'), sortable: true },
-          quota_used: { label: this.$root.i18n('已使用额度'), sortable: true },
-          quota_left: { label: this.$root.i18n('剩余额度'), sortable: true },
+          quota: { label: this.$root.i18n('Monthly basic allowance'), sortable: true },
+          quota_temporary: { label: this.$root.i18n('Temporary allowance'), sortable: true },
+          quota_used: { label: this.$root.i18n('The used amt'), sortable: true },
+          quota_left: { label: this.$root.i18n('Balance'), sortable: true },
           operating: { label: this.$root.i18n('operating') }
         },
         formData: {

@@ -47,11 +47,11 @@
         siteOptions: [],
         fields: {
           name: { label: this.$root.i18n('name'), sortable: true },
-          in_people_num: { label: this.$root.i18n('存款人数'), sortable: true },
-          in_times: { label: this.$root.i18n('存款人次'), sortable: true },
-          in_money_sum: { label: this.$root.i18n('总存款'), sortable: true },
-          out_money_sum: { label: this.$root.i18n('总取款'), sortable: true },
-          win_lose: { label: this.$root.i18n('站台输赢'), sortable: true }
+          in_people_num: { label: this.$root.i18n('Number of deposits'), sortable: true },
+          in_times: { label: this.$root.i18n('Times of deposits'), sortable: true },
+          in_money_sum: { label: this.$root.i18n('Total deposits'), sortable: true },
+          out_money_sum: { label: this.$root.i18n('Total withdrawals '), sortable: true },
+          win_lose: { label: this.$root.i18n('Site Win/Loss'), sortable: true }
         },
         formData: {
           site_code: '',

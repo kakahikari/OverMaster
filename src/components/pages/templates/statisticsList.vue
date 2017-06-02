@@ -17,7 +17,7 @@
         .card-text.text-right
           button.btn.btn-success.btn-sm(@click="updateUserNum")
             icon(name="refresh")
-            | &nbsp;{{ $root.i18n('更新有效会员') }}
+            | &nbsp;{{ $root.i18n('valid membership renewal') }}
         b-table.table-bordered(striped ":items"="list" ":fields"="fields")
 </template>
 
@@ -33,7 +33,7 @@
         siteOptions: [],
         fields: {
           name: { label: this.$root.i18n('name'), sortable: true },
-          link: { label: this.$root.i18n('site link'), sortable: true },
+          link: { label: this.$root.i18n('Site URL'), sortable: true },
           member_count: { label: this.$root.i18n('number of active members'), sortable: true }
         },
         formData: {
