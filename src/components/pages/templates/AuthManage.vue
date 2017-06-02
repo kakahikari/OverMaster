@@ -11,10 +11,10 @@
           template(slot="id" scope="item")
             template(v-for="auth in authorityGroupList.filter(node => node.id == item.value)[0].list")
               label.form-checkbox
-                input(type="checkbox" v-model="auth.status" readonly="readonly")
+                input(type="checkbox" v-model="auth.status" disabled="disabled")
                 | {{ $root.i18n(auth.page) }}
           template(slot="operating" scope="item")
-            template(v-if="item.item.id !== $store.state.AUTH.auth")
+            template(v-if="item.item.id !== '1' && item.item.id !== $store.state.AUTH.auth")
               button.btn.btn-secondary.btn-sm(
                 @click="editForm({authId: item.item.id, name: item.item.name})"
               )
