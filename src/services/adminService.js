@@ -21,7 +21,7 @@ class AdminService {
 
         createCookie('apiToken', res.token, 1)
         createCookie('auth', res.auth_id, 1)
-        createCookie('username', body.account, 1)
+        createCookie('account', body.account, 1)
 
         return resolve(res)
       })

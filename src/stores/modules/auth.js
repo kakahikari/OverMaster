@@ -6,7 +6,7 @@ const state = {
   token: '',
   auth: '',
   status: 0,
-  username: '',
+  account: '',
   language: '',
   currency: '',
   sideMenu: [],
@@ -19,7 +19,7 @@ const mutations = {
     state.token = ''
     state.auth = ''
     state.status = 0
-    state.username = ''
+    state.account = ''
     state.sideMenu = []
     state.siteList = []
     state.authorityList = []
@@ -33,8 +33,8 @@ const mutations = {
   SET_AUTH_STATUS (state, payload) {
     state.status = payload
   },
-  SET_AUTH_USERNAME (state, payload) {
-    state.username = payload
+  SET_AUTH_ACCOUNT (state, payload) {
+    state.account = payload
   },
   SET_AUTH_LANGUAGE (state, payload) {
     state.language = payload
@@ -110,7 +110,7 @@ const actions = {
   async checkStatus (store, param) {
     const apiToken = await readCookie('apiToken')
     const auth = await readCookie('auth')
-    const username = await readCookie('username')
+    const account = await readCookie('account')
     const language = await readCookie('language')
 
     if (apiToken) {
@@ -121,7 +121,7 @@ const actions = {
     }
 
     if (auth) store.commit('SET_AUTH_AUTH', auth)
-    if (username) store.commit('SET_AUTH_USERNAME', username)
+    if (account) store.commit('SET_AUTH_ACCOUNT', account)
     if (language) store.commit('SET_AUTH_LANGUAGE', language)
   },
   async setUser (store, param) {
@@ -132,14 +132,14 @@ const actions = {
     console.log(`@{setUser}`, apiToken)
 
     if (apiNotAllowed) throw Error('v-no-token')
-    store.dispatch('setAuthUsername', body.username)
+    store.dispatch('setAuthAccount', body.account)
   },
   setAuthToken (store, param) {
     store.commit('SET_AUTH_TOKEN', param.token)
     store.commit('SET_AUTH_AUTH', param.auth_id)
   },
-  setAuthUsername (store, param) {
-    store.commit('SET_AUTH_USERNAME', param)
+  setAuthAccount (store, param) {
+    store.commit('SET_AUTH_ACCOUNT', param)
   },
   async setLanguage (store, param) {
     const { language } = param
