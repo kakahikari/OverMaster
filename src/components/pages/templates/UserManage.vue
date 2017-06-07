@@ -52,10 +52,10 @@
           .form-group.col
             label {{ $root.i18n('account') }}
             b-form-input(v-model="addFormData.account")
+            small.text-muted {{ $root.i18n('Must be 5 to 20 characters, numbers or /') }}
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="addFormData.name")
-            small.text-muted {{ $root.i18n('Must be 5 to 20 characters, numbers or /') }}
           .form-group.col
             label {{ $root.i18n('password') }}
             b-form-input(v-model="addFormData.password" type="password")
