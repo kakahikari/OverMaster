@@ -93,6 +93,8 @@ export default {
     'The modified amt or temporary allowance is null / 0': 'The modified amt or temporary allowance is null / 0',
     'Data abt this site not found': 'Data abt this site not found',
     'Allowance of this site is insufficient': 'Allowance of this site is insufficient',
-    'Update of the used amt of this site is in error': 'Update of the used amt of this site is in error'
+    'Update of the used amt of this site is in error': 'Update of the used amt of this site is in error',
+    'You can\'t modify this permission': 'You can\'t modify this permission',
+    'You can\'t modify own permission': 'You can\'t modify own permission'
   }
 }

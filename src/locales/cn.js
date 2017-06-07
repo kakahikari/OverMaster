@@ -93,6 +93,8 @@ export default {
     'The modified amt or temporary allowance is null / 0': '修改额度或临时额度为空值或0',
     'Data abt this site not found': '无此站台资讯',
     'Allowance of this site is insufficient': '站台剩余额度不足',
-    'Update of the used amt of this site is in error': '更新站台已使用额度异常'
+    'Update of the used amt of this site is in error': '更新站台已使用额度异常',
+    'You can\'t modify this permission': '无法修改此权限',
+    'You can\'t modify own permission': '无法修改自己的权限'
   }
 }

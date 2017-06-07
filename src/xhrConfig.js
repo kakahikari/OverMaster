@@ -27,6 +27,8 @@ export const errorCodes = {
   '1116': 'You don\'t have the permission to edit the permission group',
   '1117': 'Please send the ID of the permission group',
   '1118': 'ACC deleted, DB in error',
+  '1119': 'You can\'t modify this permission',
+  '1120': 'You can\'t modify own permission',
   '1201': 'No data found',
   '1202': 'Start Time must be before End Time',
   '1203': 'Both start time & end time are required',
