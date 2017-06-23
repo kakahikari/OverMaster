@@ -36,7 +36,7 @@
             template(v-for="node in $store.state.AUTH.authorityList" )
               label
                 input(type="checkbox" v-model="addFormSelectCodes" ":value"="node.page")
-                | &nbsp;{{ node.name }}
+                | &nbsp;{{ $root.i18n(node.page) }}
       b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('Edit authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
         form(@submit.stop.prevent="submitEditForm")
           .form-group.col
@@ -47,7 +47,7 @@
             template(v-for="node in $store.state.AUTH.authorityList" )
               label
                 input(type="checkbox" v-model="editFormSelectCodes" ":value"="node.page")
-                | &nbsp;{{ node.name }}
+                | &nbsp;{{ $root.i18n(node.page) }}
       b-modal(@ok="submitDeleteForm" id="deleteForm" ":title"="$root.i18n('Delete authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
         form(@submit.stop.prevent="submitDeleteForm")
           span {{ $root.i18n('Are you sure to delete') }} {{deleteFormData.name}} ?
