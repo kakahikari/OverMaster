@@ -32,7 +32,7 @@
             | &nbsp;{{ $root.i18n('Add user') }}
         b-table.table-bordered(striped ":items"="list" ":fields"="fields" v-if="authorityGroupList.length > 0")
           template(slot="site" scope="item")
-            template(v-for="(site, index) in item.value.split(',')")
+            template(v-for="(site, index) in item.value.split(',')" v-if="item.value !== ''")
               template(v-if="$store.state.AUTH.language == 'cn'")
                 | {{ $store.state.AUTH.siteList.filter(node => node.site == site)[0].cn_name }}
               template(v-if="$store.state.AUTH.language == 'en'")
