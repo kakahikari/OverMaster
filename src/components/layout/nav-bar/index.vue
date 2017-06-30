@@ -17,7 +17,7 @@
       b-nav-item(@click="logout()")
         icon(name="sign-out")
     b-modal(@ok="submitEditForm" id="userEditForm" ":title"="$root.i18n('Edit user')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-      form(@submit.stop.prevent="submitEditForm")
+      form(@submit.stop.prevent="")
         .form-group.col
           label {{ $root.i18n('change password') }}
           b-form-input(v-model="editFormData.password" type="password")

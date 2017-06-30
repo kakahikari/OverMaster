@@ -30,7 +30,7 @@
               icon(name="pencil-square-o")
               | &nbsp;{{ $root.i18n('edit allowance') }}
     b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('edit allowance')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-      form(@submit.stop.prevent="submitEditForm")
+      form(@submit.stop.prevent="")
         .form-group.col
           label {{ $root.i18n('site') }}
           span {{ editFormData.name }}

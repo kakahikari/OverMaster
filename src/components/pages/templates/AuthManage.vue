@@ -27,7 +27,7 @@
                 | &nbsp;{{ $root.i18n('delete') }}
         span(v-else) {{ $root.i18n('corresponding error in permission mgmt group') }}
       b-modal(@ok="submitAddForm" id="addForm" ":title"="$root.i18n('Add authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-        form(@submit.stop.prevent="submitAddForm")
+        form(@submit.stop.prevent="")
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="addFormData.name")
@@ -38,7 +38,7 @@
                 input(type="checkbox" v-model="addFormSelectCodes" ":value"="node.page")
                 | &nbsp;{{ $root.i18n(node.page) }}
       b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('Edit authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-        form(@submit.stop.prevent="submitEditForm")
+        form(@submit.stop.prevent="")
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="editFormData.name")
@@ -49,7 +49,7 @@
                 input(type="checkbox" v-model="editFormSelectCodes" ":value"="node.page")
                 | &nbsp;{{ $root.i18n(node.page) }}
       b-modal(@ok="submitDeleteForm" id="deleteForm" ":title"="$root.i18n('Delete authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-        form(@submit.stop.prevent="submitDeleteForm")
+        form(@submit.stop.prevent="")
           span {{ $root.i18n('Are you sure to delete') }} {{deleteFormData.name}} ?
 </template>
 
