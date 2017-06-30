@@ -31,14 +31,21 @@
             icon(name="plus")
             | &nbsp;{{ $root.i18n('Add user') }}
         b-table.table-bordered(striped ":items"="list" ":fields"="fields" v-if="authorityGroupList.length > 0")
-          template(slot="site" scope="item")
-            template(v-for="(site, index) in item.value.split(',')" v-if="item.value !== ''")
+          template(slot="water" scope="item")
+            template(v-for="node in item.value.filter(node => node.water_type === 'q')")
               template(v-if="$store.state.AUTH.language == 'cn'")
-                | {{ $store.state.AUTH.siteList.filter(node => node.site == site)[0].cn_name }}
+                | {{ siteList.filter(x => x.site === node.site)[0].cn_name }} / {{ node.value_max }}
               template(v-if="$store.state.AUTH.language == 'en'")
-                | {{ $store.state.AUTH.siteList.filter(node => node.site == site)[0].en_name }}
-              template(v-if="index !== item.value.split(',').length - 1")
-                | ,
+                | {{ siteList.filter(x => x.site === node.site)[0].en_name }} / {{ node.value_max }}
+              br
+          //- template(slot="site" scope="item")
+            //- template(v-for="(site, index) in item.value.split(',')" v-if="item.value !== ''")
+            //-   template(v-if="$store.state.AUTH.language == 'cn'")
+            //-     | {{ $store.state.AUTH.siteList.filter(node => node.site == site)[0].cn_name }}
+            //-   template(v-if="$store.state.AUTH.language == 'en'")
+            //-     | {{ $store.state.AUTH.siteList.filter(node => node.site == site)[0].en_name }}
+            //-   template(v-if="index !== item.value.split(',').length - 1")
+            //-     | ,
           template(slot="authority" scope="item")
             | {{ authorityGroupList.filter(node => node.id == item.value)[0].name }}
           template(slot="operating" scope="item")
@@ -47,8 +54,14 @@
             )
               icon(name="pencil-square-o")
               | &nbsp;{{ $root.i18n('edit') }}
+            button.btn.btn-secondary.btn-sm(
+              @click="editAllowanceForm({userId: item.item.id, site: item.item.site, account: item.item.account})"
+              v-if="item.item.site !== '' && item.item.account !== 'admin'"
+            )
+              icon(name="pencil-square-o")
+              | &nbsp;{{ $root.i18n('edit allowance') }}
       b-modal(@ok="submitAddForm" id="addForm" ":title"="$root.i18n('Add user')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-        form(@submit.stop.prevent="submitAddForm")
+        form(@submit.stop.prevent="")
           .form-group.col
             label {{ $root.i18n('account') }}
             b-form-input(v-model="addFormData.account")
@@ -73,7 +86,10 @@
                 template(v-if="$store.state.AUTH.language == 'en'")
                   span &nbsp;{{ node.en_name }}
       b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('Edit user')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
-        form(@submit.stop.prevent="submitEditForm")
+        form(@submit.stop.prevent="")
+          .form-group.col
+            label {{ $root.i18n('account') }}
+            span {{ editFormData.account }}
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="editFormData.name")
@@ -97,10 +113,22 @@
                   span &nbsp;{{ node.cn_name }}
                 template(v-if="$store.state.AUTH.language == 'en'")
                   span &nbsp;{{ node.en_name }}
+      b-modal(@ok="submitAllowanceForm" id="allowanceForm" ":title"="$root.i18n('Edit allowance')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
+        form(@submit.stop.prevent="")
+          .form-group.col
+            label {{ $root.i18n('account') }}
+            span {{ allowanceFormData.account }}
+          .form-group.col
+            label {{ $root.i18n('site') }}
+            b-form-select(v-model="allowanceFormData.site" ":options"="editFormSelectSites")
+          .form-group.col
+            label {{ $root.i18n('max allowance') }}
+            b-form-input(v-model="allowanceFormData.value_max")
 </template>
 
 <script>
   import AdminService from 'services/adminService'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'templates__UserManage',
@@ -115,7 +143,7 @@
           account: { label: this.$root.i18n('account'), sortable: true },
           name: { label: this.$root.i18n('name'), sortable: true },
           authority: { label: this.$root.i18n('authority'), sortable: true },
-          site: { label: this.$root.i18n('site'), sortable: true },
+          water: { label: this.$root.i18n('site/allowance'), sortable: true },
           last_login_ip: { label: this.$root.i18n('last login ip'), sortable: true },
           last_login_time: { label: this.$root.i18n('last login time'), sortable: true },
           operating: { label: this.$root.i18n('operating') }
@@ -146,9 +174,24 @@
         statusOptions: [
           {text: this.$root.i18n('enable'), value: '1'},
           {text: this.$root.i18n('disable'), value: '0'}
-        ]
+        ],
+        allowanceFormData: {
+          user_id: '',
+          site: '',
+          value_max: '',
+          account: ''
+        }
       }
     },
+
+    computed: mapState({
+      siteList: function (state) {
+        return state.AUTH.siteList
+      },
+      language: function (state) {
+        return state.AUTH.language
+      }
+    }),
 
     watch: {
       addFormSelectSites (newVal) {
@@ -190,11 +233,26 @@
 
     methods: {
       action () {
-        AdminService.getUserList({context: this, body: this.formData}).then((res) => {
-          this.list = res
+        AdminService.getUserList({context: this, body: this.formData}).then(async (res) => {
+          let out = []
+          await res.forEach(async (node) => {
+            node.water = await this.getUserWater(node.id)
+            out.push(node)
+          })
+          this.list = out
         })
         .catch((err) => {
           this.$root.showToast({type: 'warning', content: err})
+        })
+      },
+      getUserWater (userId) {
+        return new Promise((resolve, reject) => {
+          AdminService.getUserWater({context: this, body: {'user_id': userId}}).then((res) => {
+            return resolve(res)
+          })
+          .catch((err) => {
+            return reject(err)
+          })
         })
       },
       getSiteOptions () {
@@ -224,7 +282,7 @@
       },
       submitAddForm () {
         AdminService.addUser({context: this, body: this.addFormData}).then((res) => {
-          this.$root.showToast({type: 'warning', content: this.$root.i18n('success')})
+          this.$root.showToast({content: this.$root.i18n('success')})
           this.action()
         })
         .catch((err) => {
@@ -250,7 +308,34 @@
       submitEditForm () {
         if (this.editFormData.account === this.$store.state.AUTH.username) this.editFormData.account = ''
         AdminService.editUser({context: this, body: this.editFormData}).then((res) => {
-          this.$root.showToast({type: 'warning', content: this.$root.i18n('success')})
+          this.$root.showToast({content: this.$root.i18n('success')})
+          this.action()
+        })
+        .catch((err) => {
+          this.$root.showToast({type: 'warning', content: err})
+        })
+      },
+      editAllowanceForm ({userId, site, account}) {
+        this.allowanceFormData = {
+          user_id: userId,
+          site: '',
+          value_max: 0,
+          account: account
+        }
+        this.editFormSelectSites = []
+        this.editFormSelectSites.push({text: this.$root.i18n('please select'), value: ''})
+        site.split(',').forEach((node) => {
+          let site = this.siteList.filter(x => x.site === node)[0]
+          let siteName = ''
+          if (this.language === 'cn') siteName = site.cn_name
+          if (this.language === 'en') siteName = site.en_name
+          this.editFormSelectSites.push({text: siteName, value: node})
+        })
+        this.$root.$emit('show::modal', 'allowanceForm')
+      },
+      submitAllowanceForm () {
+        AdminService.editUserWater({context: this, body: this.allowanceFormData}).then((res) => {
+          this.$root.showToast({content: this.$root.i18n('success')})
           this.action()
         })
         .catch((err) => {

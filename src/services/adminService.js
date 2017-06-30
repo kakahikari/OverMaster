@@ -232,6 +232,48 @@ class AdminService {
       })
     })
   }
+
+  editUserWater = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('user_id', body.user_id)
+      data.append('site', body.site)
+      data.append('water_type', body.water_type || 'q')
+      data.append('value_min', body.value_min || '0')
+      data.append('value_max', body.value_max)
+
+      return xhr({
+        method: 'post',
+        url: 'om/editUserWater',
+        apiCode: 105,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
+  getUserWater = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('user_id', body.user_id)
+
+      return xhr({
+        method: 'post',
+        url: 'om/getUserWater',
+        apiCode: 115,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
 }
 
 export default new AdminService()
