@@ -60,7 +60,7 @@
       },
       submitEditForm () {
         AdminService.editUserPassword({context: this, body: this.editFormData}).then((res) => {
-          this.$root.showToast({type: 'warning', content: this.$root.i18n('success')})
+          this.$root.showToast({content: this.$root.i18n('success')})
         })
         .catch((err) => {
           this.$root.showToast({type: 'warning', content: err})
