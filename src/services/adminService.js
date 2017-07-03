@@ -173,6 +173,25 @@ class AdminService {
     })
   }
 
+  editUserPassword = ({context, body}) => {
+    return new Promise((resolve, reject) => {
+      let data = new FormData()
+      data.append('password', body.password)
+
+      return xhr({
+        method: 'post',
+        url: 'om/editUserPassword',
+        apiCode: 114,
+        data,
+        context
+      }).then((res) => {
+        return resolve(res)
+      }).catch((err) => {
+        return reject(context.$root.i18n(ERROR_CODES[err.toString()] || err))
+      })
+    })
+  }
+
   addAuthority = ({context, body}) => {
     return new Promise((resolve, reject) => {
       let data = new FormData()

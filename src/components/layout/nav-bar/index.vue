@@ -34,12 +34,7 @@
     data () {
       return {
         editFormData: {
-          user_id: '',
-          name: '',
-          password: '',
-          status: '',
-          authority: '',
-          site: ''
+          password: ''
         }
       }
     },
@@ -64,7 +59,7 @@
         this.$root.$emit('show::modal', 'userEditForm')
       },
       submitEditForm () {
-        AdminService.editUser({context: this, body: this.editFormData}).then((res) => {
+        AdminService.editUserPassword({context: this, body: this.editFormData}).then((res) => {
           this.$root.showToast({type: 'warning', content: this.$root.i18n('success')})
           this.action()
         })
