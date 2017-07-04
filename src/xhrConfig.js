@@ -29,6 +29,8 @@ export const errorCodes = {
   '1118': 'ACC deleted, DB in error',
   '1119': 'You can\'t modify this permission',
   '1120': 'You can\'t modify own permission',
+  '1121': 'Password can\'t be null',
+  '1122': 'This site has been assigned to other user',
   '1201': 'No data found',
   '1202': 'Start Time must be before End Time',
   '1203': 'Both start time & end time are required',

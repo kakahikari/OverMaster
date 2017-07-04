@@ -98,6 +98,8 @@ export default {
     'Allowance of this site is insufficient': '站台剩余额度不足',
     'Update of the used amt of this site is in error': '更新站台已使用额度异常',
     'You can\'t modify this permission': '无法修改此权限',
-    'You can\'t modify own permission': '无法修改自己的权限'
+    'You can\'t modify own permission': '无法修改自己的权限',
+    'Password can\'t be null': '密码不能为空值',
+    'This site has been assigned to other user': '此站台已分配给其他使用者'
   }
 }
