@@ -78,7 +78,7 @@ export default {
     'ACC for DB editing is in error': '帐号编辑资料库异常',
     'You don\'t have the permission to operate this API': '没有操作此API的权限',
     'AMT for DB editing is in error': '金额编辑资料库异常',
-    'This permission is given by its user & can\'t be deleted': '',
+    'This permission is given by its user & can\'t be deleted': '有使用者分配该权限，无法删除',
     'ACC for DB creating is in error': '帐号新增资料库异常',
     'The modified #VALUE is beyond permission': '修改的数值超越自身权限',
     'The min value must be less than the max value': '最小值不该大于最大值',

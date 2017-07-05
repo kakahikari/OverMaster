@@ -30,7 +30,7 @@ const xhr = async ({ context, url = '/', method = 'get', apiCode, data = null, n
 
       console.warn && console.warn(ERROR_CODES[res.data.error_msg.toString()])
       if (res.data.error_msg === '1006') context.$root.default()
-      return reject(res.data.error_msg)
+      return reject(ERROR_CODES[res.data.error_msg.toString()])
     })
     .catch((error) => {
       if (error.response) {
@@ -39,6 +39,7 @@ const xhr = async ({ context, url = '/', method = 'get', apiCode, data = null, n
         return reject('v-timeout')
       } else {
         console.warn && console.warn(error.message)
+        return reject(error.message)
       }
     })
   })
