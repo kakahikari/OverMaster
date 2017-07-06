@@ -23,6 +23,7 @@
     "vue-directive-waves": "^2.0.2",
     "vue-flatpickr": "2.2.9",
     "vue-router": "^2.7.0",
+    "vuelidate": "^0.5.0",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

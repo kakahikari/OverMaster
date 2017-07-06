@@ -31,23 +31,27 @@
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="addFormData.name")
+            form-errors(":errors"="$v.addFormData.name")
           .form-group.col
             label {{ $root.i18n('authority') }}
             template(v-for="node in $store.state.AUTH.authorityList" )
               label
                 input(type="checkbox" v-model="addFormSelectCodes" ":value"="node.page")
                 | &nbsp;{{ $root.i18n(node.page) }}
+            form-errors(":errors"="$v.addFormSelectCodes")
       b-modal(@ok="submitEditForm" id="editForm" ":title"="$root.i18n('Edit authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
         form(@submit.stop.prevent="")
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="editFormData.name")
+            form-errors(":errors"="$v.editFormData.name")
           .form-group.col
             label {{ $root.i18n('authority') }}
             template(v-for="node in $store.state.AUTH.authorityList" )
               label
                 input(type="checkbox" v-model="editFormSelectCodes" ":value"="node.page")
                 | &nbsp;{{ $root.i18n(node.page) }}
+            form-errors(":errors"="$v.editFormSelectCodes")
       b-modal(@ok="submitDeleteForm" id="deleteForm" ":title"="$root.i18n('Delete authority')" ":ok-title"="$root.i18n('ok')" ":ok-only"="true" ":size"="'sm'")
         form(@submit.stop.prevent="")
           span {{ $root.i18n('Are you sure to delete') }} {{deleteFormData.name}} ?
@@ -55,6 +59,9 @@
 
 <script>
   import AdminService from 'services/adminService'
+  import formErrors from 'components/form-errors'
+  import formError from 'components/form-error'
+  import { required } from 'vuelidate/lib/validators'
 
   export default {
     name: 'templates__AuthManage',
@@ -117,7 +124,12 @@
         }
         this.$root.$emit('show::modal', 'addForm')
       },
-      submitAddForm () {
+      submitAddForm (e) {
+        this.$v.addFormSelectCodes.$touch()
+        this.$v.addFormData.$touch()
+        if (this.$v.addFormSelectCodes.$error) return e.cancel()
+        if (this.$v.addFormData.$error) return e.cancel()
+
         this.addFormSelectCodes.forEach((node) => {
           this.addFormData.code.push({page: node, status: 1})
         })
@@ -144,7 +156,12 @@
         }
         this.$root.$emit('show::modal', 'editForm')
       },
-      submitEditForm () {
+      submitEditForm (e) {
+        this.$v.editFormSelectCodes.$touch()
+        this.$v.editFormData.$touch()
+        if (this.$v.editFormSelectCodes.$error) return e.cancel()
+        if (this.$v.editFormData.$error) return e.cancel()
+
         this.editFormSelectCodes.forEach((node) => {
           this.editFormData.code.push({page: node, status: 1})
         })
@@ -165,7 +182,7 @@
         }
         this.$root.$emit('show::modal', 'deleteForm')
       },
-      submitDeleteForm () {
+      submitDeleteForm (e) {
         AdminService.delAuthority({context: this, body: this.deleteFormData}).then((res) => {
           this.$root.showToast({content: this.$root.i18n('success')})
           this.action()
@@ -173,6 +190,22 @@
         .catch((err) => {
           this.$root.showToast({type: 'warning', content: err})
         })
+      }
+    },
+
+    components: {
+      formErrors,
+      formError
+    },
+
+    validations: {
+      addFormSelectCodes: { required },
+      addFormData: {
+        name: { required }
+      },
+      editFormSelectCodes: { required },
+      editFormData: {
+        name: { required }
       }
     }
   }

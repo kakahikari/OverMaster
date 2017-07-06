@@ -37,13 +37,18 @@
         .form-group.col
           label {{ $root.i18n('Monthly basic allowance') }}
           b-form-input(v-model="editFormData.quota" type="number")
+          form-errors(":errors"="$v.editFormData.quota")
         .form-group.col
           label {{ $root.i18n('Temporary allowance') }}
           b-form-input(v-model="editFormData.quota_temporary" type="number")
+          form-errors(":errors"="$v.editFormData.quota_temporary")
 </template>
 
 <script>
   import SiteService from 'services/siteService'
+  import formErrors from 'components/form-errors'
+  import formError from 'components/form-error'
+  import { required } from 'vuelidate/lib/validators'
 
   export default {
     name: 'templates__QuotaManage',
@@ -132,7 +137,10 @@
         }
         this.$root.$emit('show::modal', 'editForm')
       },
-      submitEditForm () {
+      submitEditForm (e) {
+        this.$v.editFormData.$touch()
+        if (this.$v.editFormData.$error) return e.cancel()
+
         SiteService.editSiteQuota({context: this, body: this.editFormData}).then((res) => {
           this.$root.showToast({content: this.$root.i18n('success')})
           this.action()
@@ -140,6 +148,18 @@
         .catch((err) => {
           this.$root.showToast({type: 'warning', content: err})
         })
+      }
+    },
+
+    components: {
+      formErrors,
+      formError
+    },
+
+    validations: {
+      editFormData: {
+        quota: { required },
+        quota_temporary: { required }
       }
     }
   }

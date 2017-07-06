@@ -16,6 +16,10 @@ Vue.filter('toNumber', function (value) {
   return out.toNumber({})
 })
 
+// Vuelidate
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+
 // css
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'

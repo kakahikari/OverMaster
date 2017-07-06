@@ -100,6 +100,9 @@ export default {
     'You can\'t modify this permission': '无法修改此权限',
     'You can\'t modify own permission': '无法修改自己的权限',
     'Password can\'t be null': '密码不能为空值',
-    'This site has been assigned to other user': '此站台已分配给其他使用者'
+    'This site has been assigned to other user': '此站台已分配给其他使用者',
+    'required': '必填',
+    'must be characters or numbers': '只可使用英文及数字',
+    'must be numbers': '只可使用数字'
   }
 }

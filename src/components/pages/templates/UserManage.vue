@@ -66,16 +66,20 @@
             label {{ $root.i18n('account') }}
             b-form-input(v-model="addFormData.account")
             small.text-muted {{ $root.i18n('Must be 5 to 20 characters, numbers or /') }}
+            form-errors(":errors"="$v.addFormData.account")
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="addFormData.name")
+            form-errors(":errors"="$v.addFormData.name")
           .form-group.col
             label {{ $root.i18n('password') }}
             b-form-input(v-model="addFormData.password" type="password")
             small.text-muted {{ $root.i18n('Must be 8 to 20 characters or numbers') }}
+            form-errors(":errors"="$v.addFormData.password")
           .form-group.col
             label {{ $root.i18n('authority') }}
             b-form-select(v-model="addFormData.authority" ":options"="authorityGroupOptions")
+            form-errors(":errors"="$v.addFormData.authority")
           .form-group.col
             label {{ $root.i18n('site') }}
             template(v-for="node in $store.state.AUTH.siteList")
@@ -93,6 +97,7 @@
           .form-group.col
             label {{ $root.i18n('name') }}
             b-form-input(v-model="editFormData.name")
+            form-errors(":errors"="$v.editFormData.name")
           .form-group.col
             label {{ $root.i18n('change password') }}
             b-form-input(v-model="editFormData.password" type="password")
@@ -101,6 +106,7 @@
             label {{ $root.i18n('authority') }}
             b-form-select(v-if="editFormData.account !== $store.state.AUTH.username" v-model="editFormData.authority" ":options"="authorityGroupOptions")
             b-form-select(v-else v-model="editFormData.authority" ":options"="authorityGroupOptions" disabled)
+            form-errors(":errors"="$v.editFormData.authority")
           .form-group.col
             label {{ $root.i18n('status') }}
             b-form-radio(v-model="editFormData.status" :options="statusOptions")
@@ -121,14 +127,19 @@
           .form-group.col
             label {{ $root.i18n('site') }}
             b-form-select(v-model="allowanceFormData.site" ":options"="editFormSelectSites")
+            form-errors(":errors"="$v.allowanceFormData.site")
           .form-group.col
             label {{ $root.i18n('max allowance') }}
             b-form-input(v-model="allowanceFormData.value_max")
+            form-errors(":errors"="$v.allowanceFormData.value_max")
 </template>
 
 <script>
   import AdminService from 'services/adminService'
   import { mapState } from 'vuex'
+  import formErrors from 'components/form-errors'
+  import formError from 'components/form-error'
+  import { required } from 'vuelidate/lib/validators'
 
   export default {
     name: 'templates__UserManage',
@@ -280,7 +291,10 @@
         }
         this.$root.$emit('show::modal', 'addForm')
       },
-      submitAddForm () {
+      submitAddForm (e) {
+        this.$v.addFormData.$touch()
+        if (this.$v.addFormData.$error) return e.cancel()
+
         AdminService.addUser({context: this, body: this.addFormData}).then((res) => {
           this.$root.showToast({content: this.$root.i18n('success')})
           this.action()
@@ -305,7 +319,10 @@
         })
         this.$root.$emit('show::modal', 'editForm')
       },
-      submitEditForm () {
+      submitEditForm (e) {
+        this.$v.editFormData.$touch()
+        if (this.$v.editFormData.$error) return e.cancel()
+
         if (this.editFormData.account === this.$store.state.AUTH.username) this.editFormData.account = ''
         AdminService.editUser({context: this, body: this.editFormData}).then((res) => {
           this.$root.showToast({content: this.$root.i18n('success')})
@@ -333,7 +350,10 @@
         })
         this.$root.$emit('show::modal', 'allowanceForm')
       },
-      submitAllowanceForm () {
+      submitAllowanceForm (e) {
+        this.$v.allowanceFormData.$touch()
+        if (this.$v.allowanceFormData.$error) return e.cancel()
+
         AdminService.editUserWater({context: this, body: this.allowanceFormData}).then((res) => {
           this.$root.showToast({content: this.$root.i18n('success')})
           this.action()
@@ -341,6 +361,28 @@
         .catch((err) => {
           this.$root.showToast({type: 'warning', content: err})
         })
+      }
+    },
+
+    components: {
+      formErrors,
+      formError
+    },
+
+    validations: {
+      addFormData: {
+        account: { required },
+        name: { required },
+        password: { required },
+        authority: { required }
+      },
+      editFormData: {
+        name: { required },
+        authority: { required }
+      },
+      allowanceFormData: {
+        site: { required },
+        value_max: { required }
       }
     }
   }
