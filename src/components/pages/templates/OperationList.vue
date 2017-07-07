@@ -37,6 +37,7 @@
 
 <script>
   import SiteService from 'services/siteService'
+  import moment from 'moment'
 
   export default {
     name: 'templates__OperationList',
@@ -62,6 +63,8 @@
     },
 
     mounted () {
+      this.formData.start_time = moment().startOf('month').format('YYYY-MM-DD HH:mm')
+      this.formData.end_time = moment().format('YYYY-MM-DD HH:mm')
       if (this.$store.state.AUTH.siteList.length < 1) {
         this.$store.dispatch('getSiteList', {context: this}).then((res) => {
           this.getSiteOptions()
